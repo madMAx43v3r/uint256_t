@@ -67,7 +67,7 @@ class uint256_t{
         uint256_t(const bool & b);
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
-        uint256_t(const T & rhs)
+        constexpr uint256_t(const T & rhs)
 #ifdef __BIG_ENDIAN__
             : UPPER(uint128_0), LOWER(rhs)
 #endif
@@ -83,7 +83,7 @@ class uint256_t{
         }
 
         template <typename S, typename T, typename = typename std::enable_if <std::is_integral<S>::value && std::is_integral<T>::value, void>::type>
-        uint256_t(const S & upper_rhs, const T & lower_rhs)
+        constexpr uint256_t(const S & upper_rhs, const T & lower_rhs)
 #ifdef __BIG_ENDIAN__
             : UPPER(upper_rhs), LOWER(lower_rhs)
 #endif
@@ -92,7 +92,7 @@ class uint256_t{
 #endif
         {}
 
-        uint256_t(const uint128_t & upper_rhs, const uint128_t & lower_rhs)
+        constexpr uint256_t(const uint128_t & upper_rhs, const uint128_t & lower_rhs)
 #ifdef __BIG_ENDIAN__
             : UPPER(upper_rhs), LOWER(lower_rhs)
 #endif
@@ -100,7 +100,7 @@ class uint256_t{
             : LOWER(lower_rhs), UPPER(upper_rhs)
 #endif
         {}
-        uint256_t(const uint128_t & lower_rhs)
+        constexpr uint256_t(const uint128_t & lower_rhs)
 #ifdef __BIG_ENDIAN__
             : UPPER(uint128_0), LOWER(lower_rhs)
 #endif
@@ -114,7 +114,7 @@ class uint256_t{
                 std::is_integral<S>::value &&
                 std::is_integral<T>::value &&
                 std::is_integral<U>::value, void>::type>
-        uint256_t(const R & upper_lhs, const S & lower_lhs, const T & upper_rhs, const U & lower_rhs)
+        constexpr uint256_t(const R & upper_lhs, const S & lower_lhs, const T & upper_rhs, const U & lower_rhs)
 #ifdef __BIG_ENDIAN__
             : UPPER(upper_lhs, lower_lhs), LOWER(upper_rhs, lower_rhs)
 #endif
@@ -426,12 +426,12 @@ class uint256_t{
 };
 
 // useful values
-UINT256_T_EXTERN extern const uint128_t uint128_64;
-UINT256_T_EXTERN extern const uint128_t uint128_128;
-UINT256_T_EXTERN extern const uint128_t uint128_256;
-UINT256_T_EXTERN extern const uint256_t uint256_0;
-UINT256_T_EXTERN extern const uint256_t uint256_1;
-UINT256_T_EXTERN extern const uint256_t uint256_max;
+static constexpr uint128_t uint128_64 = uint128_t(64);
+static constexpr uint128_t uint128_128 = uint128_t(128);
+static constexpr uint128_t uint128_256 = uint128_t(256);
+static constexpr uint256_t uint256_0 = uint256_t(0);
+static constexpr uint256_t uint256_1 = uint256_t(1);
+static constexpr uint256_t uint256_max = uint256_t(uint128_t((uint64_t) -1, (uint64_t) -1), uint128_t((uint64_t) -1, (uint64_t) -1));
 
 // Bitwise Operators
 UINT256_T_EXTERN uint256_t operator&(const uint128_t & lhs, const uint256_t & rhs);
