@@ -26,6 +26,8 @@ void uint256_t::init_from_base(const char * s, uint8_t base) {
             digit = s[pos] - '0';
         } else if('a' <= s[pos] && s[pos] <= 'z') {
             digit = s[pos] - 'a' + 10;
+        } else if('A' <= s[pos] && s[pos] <= 'Z') {
+            digit = s[pos] - 'A' + 10;
         }
         *this += digit * power;
         pos--;
