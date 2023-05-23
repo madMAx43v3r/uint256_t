@@ -378,6 +378,13 @@ std::pair <uint256_t, uint256_t> uint256_t::divmod(const uint256_t & lhs, const 
         return std::pair <uint256_t, uint256_t> (uint256_0, lhs);
     }
 
+    // 64-bit shortcut
+    if (lhs >> 64 == 0 && rhs >> 64 == 0){
+        return std::pair <uint256_t, uint256_t> (
+                lhs.lower().lower() / rhs.lower().lower(),
+                lhs.lower().lower() % rhs.lower().lower());
+    }
+
     std::pair <uint256_t, uint256_t> qr(uint256_0, lhs);
     uint256_t copyd = rhs << (lhs.bits() - rhs.bits());
     uint256_t adder = uint256_1 << (lhs.bits() - rhs.bits());
