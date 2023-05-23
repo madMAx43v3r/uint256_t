@@ -363,7 +363,7 @@ uint256_t & uint256_t::operator*=(const uint256_t & rhs){
     return *this;
 }
 
-std::pair <uint256_t, uint256_t> uint256_t::divmod(const uint256_t & lhs, const uint256_t & rhs) const{
+std::pair <uint256_t, uint256_t> uint256_t::divmod(const uint256_t & lhs, const uint256_t & rhs){
     // Save some calculations /////////////////////
     if (rhs == uint256_0){
         throw std::domain_error("Error: division or modulus by 0");
@@ -378,11 +378,9 @@ std::pair <uint256_t, uint256_t> uint256_t::divmod(const uint256_t & lhs, const 
         return std::pair <uint256_t, uint256_t> (uint256_0, lhs);
     }
 
-    // 64-bit shortcut
-    if (lhs >> 64 == 0 && rhs >> 64 == 0){
-        return std::pair <uint256_t, uint256_t> (
-                lhs.lower().lower() / rhs.lower().lower(),
-                lhs.lower().lower() % rhs.lower().lower());
+    // 128-bit shortcut
+    if (lhs.upper() == 0 && rhs.upper() == 0) {
+        return uint128_t::divmod(lhs.lower(), rhs.lower());
     }
 
     std::pair <uint256_t, uint256_t> qr(uint256_0, lhs);
