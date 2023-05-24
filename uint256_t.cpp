@@ -317,6 +317,10 @@ uint256_t uint256_t::operator*(const uint128_t & rhs) const{
 }
 
 uint256_t uint256_t::operator*(const uint256_t & rhs) const{
+    // 128-bit shortcut
+    if(((*this) >> 64) == 0 && (rhs >> 64) == 0) {
+        return lower() * rhs.lower();
+    }
     // split values into 4 64-bit parts
     uint128_t top[4] = {UPPER.upper(), UPPER.lower(), LOWER.upper(), LOWER.lower()};
     uint128_t bottom[4] = {rhs.upper().upper(), rhs.upper().lower(), rhs.lower().upper(), rhs.lower().lower()};
